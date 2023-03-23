@@ -30,6 +30,7 @@ import { Districts } from 'src/homepage/entity/districts.entity';
         entities: [
           User,
           OrderItem,
+          
           Chat,
           Review,
           Discount,

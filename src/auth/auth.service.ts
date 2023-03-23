@@ -9,6 +9,9 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entity/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +19,8 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
   async signUp(createUserDto: CreateUserDto) {
     // Check if user exists
@@ -30,7 +35,11 @@ export class AuthService {
       ...createUserDto,
       password: hash,
     });
-    const tokens = await this.getTokens(newUser.id, newUser.email, newUser.role);
+    const tokens = await this.getTokens(
+      newUser.id,
+      newUser.email,
+      newUser.role,
+    );
     await this.updateRefreshToken(newUser.id, tokens.refreshToken);
     return tokens;
   }
@@ -52,8 +61,8 @@ export class AuthService {
       id: user.id,
       username: user.username,
       image: user.image,
-      address:user.address,
-      phone:user.phone,
+      address: user.address,
+      phone: user.phone,
     };
   }
 
@@ -87,7 +96,7 @@ export class AuthService {
     });
   }
 
-  async getTokens(userId: number, email: string, role:any) {
+  async getTokens(userId: number, email: string, role: any) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.sign(
         {
@@ -96,7 +105,7 @@ export class AuthService {
           email,
         },
         {
-          secret: "mycat",
+          secret: 'mycat',
           expiresIn: '7d',
         },
       ),
@@ -107,7 +116,7 @@ export class AuthService {
           email,
         },
         {
-          secret: "mycat2",
+          secret: 'mycat2',
           expiresIn: '30d',
         },
       ),
@@ -116,6 +125,84 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
+    };
+  }
+
+  async googleLogin(req) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+    const ggUser = {
+      email: req.user.email,
+      username: req.user.lastName + ' ' + req.user.firstName,
+    };
+    const userEmail = await this.usersRepository.findOneBy({
+      email: ggUser.email,
+    });
+    
+    if (userEmail) {
+      const tokens = await this.getTokens(userEmail.id, userEmail.email, userEmail.role);
+      return {
+        tokens,
+        role: userEmail.role,
+        id: userEmail.id,
+        username: userEmail.username,
+        image: userEmail.image,
+        address: userEmail.address,
+        phone: userEmail.phone,
+      };
+    }
+    const newUser = await this.usersRepository.create(ggUser);
+    await this.usersRepository.save(newUser);
+    const tokens = await this.getTokens(newUser.id, newUser.email, newUser.role);
+    return {
+      tokens,
+      role: newUser.role,
+      id: newUser.id,
+      username: newUser.username,
+      image: newUser.image,
+      address: newUser.address,
+      phone: newUser.phone,
+    };
+  }
+
+  async facebookLogin(req) {
+    if (!req.user) {
+      return 'No user from fb';
+    }
+    const fbUser = {
+      email: req.user.email,
+      username: req.user.lastName + ' ' + req.user.firstName,
+    };
+
+    const userEmail = await this.usersRepository
+    .createQueryBuilder()
+    .where({email: req.user.email})
+    .getOne()
+
+    if (userEmail) {
+      const tokens = await this.getTokens(userEmail.id, userEmail.email, userEmail.role);
+      return {
+        tokens,
+        role: userEmail.role,
+        id: userEmail.id,
+        username: userEmail.username,
+        image: userEmail.image,
+        address: userEmail.address,
+        phone: userEmail.phone,
+      };
+    }
+    const newUser = await this.usersRepository.create(fbUser);
+    await this.usersRepository.save(newUser);
+    const tokens = await this.getTokens(newUser.id, newUser.email, newUser.role);
+    return {
+      tokens,
+      role: newUser.role,
+      id: newUser.id,
+      username: newUser.username,
+      image: newUser.image,
+      address: newUser.address,
+      phone: newUser.phone,
     };
   }
 }

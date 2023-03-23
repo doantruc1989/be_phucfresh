@@ -41,6 +41,16 @@ export class UsersService {
     return newUser;
   }
 
+  async createUserFromgg(user:any) {
+   const userEmail = await this.findByEmail(user.email);
+   if(userEmail) {
+    return userEmail
+   }
+    const newUser = await this.usersRepository.create(user);
+    await this.usersRepository.save(newUser);
+    return newUser;
+  }
+
   async findById(id: number) {
     return this.usersRepository.findOneBy({ id: id });
   }
