@@ -20,16 +20,7 @@ import { BlogModule } from './blog/blog.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        MYSQL_HOST: "localhost",
-        MYSQL_PORT: 3306,
-        MYSQL_USER: "root",
-        MYSQL_DB: "db3",
-        JWT_ACCESS_TOKEN_SECRET: "mycat",
-        JWT_ACCESS_TOKEN_EXPIRATION_TIME: "1d",
-        JWT_REFRESH_TOKEN_SECRET: "mycat2",
-        JWT_REFRESH_TOKEN_EXPIRATION_TIME: "7d",
-      }),
+      isGlobal: true,
     }),
     DatabaseModule,
     AuthModule,
@@ -43,13 +34,13 @@ import { BlogModule } from './blog/blog.module';
     CacheModule.register<RedisClientOptions>({
       isGlobal: true,
       store: redisStore,
-      host: 'localhost',
-      port: 6379,
+      host: process.env.REDIS_HOST,
+      port: +process.env.REDIS_PORT,
     }),
     BullModule.forRoot({
       redis: {
-        host: 'localhost',
-        port: 6379,
+        host: process.env.REDIS_HOST,
+        port: +process.env.REDIS_PORT
       },
     })
   ],

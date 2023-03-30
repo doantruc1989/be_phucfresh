@@ -28,7 +28,7 @@ export class User {
   @Column({ default: ' ' })
   public phone: string;
 
-  @Column()
+  @Column({nullable:true})
   @Length(8, 24)
   public password: string;
 

@@ -105,8 +105,8 @@ export class AuthService {
           email,
         },
         {
-          secret: 'mycat',
-          expiresIn: '7d',
+          secret: process.env.ACCESS_TOKEN_SECRRET,
+          expiresIn: process.env.ACCESS_TOKEN_EXP,
         },
       ),
       this.jwtService.sign(
@@ -116,8 +116,8 @@ export class AuthService {
           email,
         },
         {
-          secret: 'mycat2',
-          expiresIn: '30d',
+          secret: process.env.REFRESH_TOKEN_SECRRET,
+          expiresIn: process.env.REFRESH_TOKEN_EXP,
         },
       ),
     ]);
