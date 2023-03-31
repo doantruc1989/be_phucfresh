@@ -14,6 +14,7 @@ import { UpdateProductVariantDto } from './dto/updateProductVariant.dto';
 import { NewProductVariantDto } from './dto/newProductVariant.dto';
 import { NewProductDto } from './dto/newProduct.dto';
 import { NewReviewDto } from './dto/newReview.dto';
+import slugify from 'slugify';
 
 @Injectable()
 export class ProductService {
@@ -34,105 +35,121 @@ export class ProductService {
   ) {}
 
   async getAllProduct(paginationDto: PaginationDto) {
-    const product = await this.productRepository
+    const product = this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
       .leftJoinAndSelect('product.discount', 'discount')
-      .leftJoinAndSelect('product.productimage', 'productimage');
+      .leftJoinAndSelect('product.productimage', 'productimage')
+      .where({ active: true })
+      .skip(paginationDto.take * (paginationDto.page - 1))
+      .take(paginationDto.take);
 
     if (paginationDto.search === 'all') {
-      return product.getMany();
+      return product.getManyAndCount();
     }
 
-     if (paginationDto.search === 'searchall') {
-      return product
-        .where(`LOWER(productName) LIKE '%${paginationDto.sortField}%'`)
+    if (paginationDto.search === 'searchall') {
+      const [list, count] = await product
+        .andWhere(`LOWER(productName) LIKE '%${paginationDto.sortField}%'`)
         .orWhere(`LOWER(price) LIKE '%${paginationDto.sortField}%'`)
-        .orWhere(`LOWER(content) LIKE '%${paginationDto.sortField}%'`)
         .orWhere(`LOWER(brand) LIKE '%${paginationDto.sortField}%'`)
-        .andWhere({active:true})
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany();
+        .getManyAndCount();
+      return [list, count];
     }
-    
+
     if (paginationDto.search === 'allDESC') {
-      return product
-        .where({ active: true })
+      const [list, count] = await product
         .orderBy(`product.${paginationDto.sortField}`, 'DESC')
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany();
+        .getManyAndCount();
+      return [list, count];
     }
 
     if (paginationDto.search === 'allRandom') {
-      return product
-        .where({ active: true })
-        .orderBy('RAND()')
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany();
+      const [list, count] = await product.orderBy('RAND()').getManyAndCount();
+      return [list, count];
     }
 
     if (paginationDto.search === 'byprice') {
-     
-      return product
-        .where({ active: true })
+      const [list, count] = await product
         .andWhere({ category: paginationDto.filter })
         .andWhere({ price: MoreThanOrEqual(paginationDto.fromPrice) })
         .andWhere({ price: LessThanOrEqual(paginationDto.toPrice) })
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany();
+        .getManyAndCount();
+      return [list, count];
     }
 
     if (paginationDto.search === 'bybrand') {
-      return product
-        .where({ active: true })
+      const [list, count] = await product
         .andWhere({ category: paginationDto.filter })
-        .andWhere({ brand: paginationDto.sortField })
-        .orWhere(`LOWER(productName) LIKE '%${paginationDto.sortField}%'`)
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany()
+        .andWhere(
+          paginationDto.condition2 === ''
+            ? {}
+            : { brand: paginationDto.condition2 },
+        )
+        .getManyAndCount();
+      return [list, count];
     }
 
     if (paginationDto.search === 'byname') {
-      return product
-        .where({ active: true })
+      const [list, count] = await product
         .andWhere({ category: paginationDto.filter })
-        .andWhere(`LOWER(productName) LIKE '%${paginationDto.sortField}%'`)
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany()
+        .andWhere(`LOWER(productName) LIKE '%${paginationDto.condition2}%'`)
+        .getManyAndCount();
+      return [list, count];
     }
 
     if (paginationDto.search === 'ASC') {
-      return product
-        .where({ active: true })
+      const [list, count] = await product
         .andWhere({ category: paginationDto.filter })
-        .orderBy(`product.${paginationDto.sortField}`, 'ASC')
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany();
+        .andWhere(
+          paginationDto.fromPrice === ''
+            ? {}
+            : { price: MoreThanOrEqual(paginationDto.fromPrice) },
+        )
+        .andWhere(
+          paginationDto.toPrice === ''
+            ? {}
+            : { price: LessThanOrEqual(paginationDto.toPrice) },
+        )
+        .andWhere(
+          paginationDto.condition2 === ''
+            ? {}
+            : { brand: paginationDto.condition2 },
+        )
+        .andWhere(`LOWER(productName) LIKE '%${paginationDto.sortField}%'`)
+        .orderBy(`product.${paginationDto.condition}`, 'ASC')
+        .getManyAndCount();
+      return [list, count];
     }
 
     if (paginationDto.search === 'DESC') {
-      return product
-        .where({ active: true })
+      const [list, count] = await product
         .andWhere({ category: paginationDto.filter })
-        .orderBy(`product.${paginationDto.sortField}`, 'DESC')
-        .skip(paginationDto.take * (paginationDto.page - 1))
-        .take(paginationDto.take)
-        .getMany();
+        .andWhere(
+          paginationDto.fromPrice === ''
+            ? {}
+            : { price: MoreThanOrEqual(paginationDto.fromPrice) },
+        )
+        .andWhere(
+          paginationDto.toPrice === ''
+            ? {}
+            : { price: LessThanOrEqual(paginationDto.toPrice) },
+        )
+        .andWhere(
+          paginationDto.condition2 === ''
+            ? {}
+            : { brand: paginationDto.condition2 },
+        )
+        .andWhere(`LOWER(productName) LIKE '%${paginationDto.sortField}%'`)
+        .orderBy(`product.${paginationDto.condition}`, 'DESC')
+        .getManyAndCount();
+      return [list, count];
     }
 
-    return product
-      .where({ active: true })
+    const [list, count] = await product
       .andWhere({ category: paginationDto.filter })
-      .skip(paginationDto.take * (paginationDto.page - 1))
-      .take(paginationDto.take)
-      .getMany();
+      .getManyAndCount();
+    return [list, count];
   }
 
   async createProduct(newProductDto: NewProductDto) {
@@ -146,7 +163,7 @@ export class ProductService {
     return product;
   }
 
-  async getProductById(id: number) {
+  async getProductById(name: string) {
     const product = await this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.discount', 'discount')
@@ -154,9 +171,9 @@ export class ProductService {
       .leftJoinAndSelect('product.productimage', 'productimage')
       .leftJoinAndSelect('product.productvariant', 'productvariant')
       .leftJoinAndSelect('product.review', 'review')
-      .where({ id: id })
+      .where({ slug: name })
       .getMany();
-    return product
+    return product;
   }
 
   async postProductById(id: number, updateProductDto: UpdateProductDto) {

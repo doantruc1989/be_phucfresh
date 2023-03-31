@@ -28,6 +28,16 @@ export class PaginationDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
+  condition?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  condition2?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
   order?: string;
 
   @ApiProperty()

@@ -22,6 +22,9 @@ export class Product {
   @Column('varchar', { name: 'productName' })
   productName: string;
 
+  @Column('varchar')
+  slug: string;
+
   @Column('float', { name: 'price', precision: 12, default: 0 })
   price: number;
 

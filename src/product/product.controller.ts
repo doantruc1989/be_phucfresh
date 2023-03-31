@@ -70,11 +70,11 @@ export class ProductController {
     return this.productService.createProduct(newProductDto);
   }
 
-  @UseInterceptors(CacheInterceptor)
-  @CacheTTL(1000)
-  @Get(':id')
-  async getProductId(@Param('id') id: number) {
-    return this.productService.getProductById(id);
+  // @UseInterceptors(CacheInterceptor)
+  // @CacheTTL(1000)
+  @Get(':name')
+  async getProductId(@Param('name') name: string) {
+    return this.productService.getProductById(name);
   }
 
   @Roles(Role.Admin)

@@ -25,7 +25,7 @@ import { Districts } from 'src/homepage/entity/districts.entity';
         host: configService.get('DATABASE_HOST') || 'localhost',
         port: configService.get('DATABASE_PORT') || 3306,
         username: configService.get('DATABASE_USER') || 'root',
-        password: configService.get('DATABASE_PASSWORD') || 'password',
+        password: 'password', 
         database: configService.get('DATABASE_DB') || 'db5',
         entities: [
           User,
