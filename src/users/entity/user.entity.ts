@@ -58,15 +58,15 @@ export class User {
   })
   createdAt: Date;
 
-  // @OneToMany(() => Review, (review) => review.user,{
-  //   onDelete: 'CASCADE'
-  // })
-  // review: Review[]
+  @OneToMany(() => Review, (review) => review.user,{
+    onDelete: 'CASCADE'
+  })
+  review: Review[]
 
-  // @OneToMany(() => OrderItem, (orderItem) => orderItem.user,{
-  //   onDelete: 'CASCADE', nullable:true
-  // })
-  // orderItem: OrderItem[]
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.user,{
+    onDelete: 'CASCADE', nullable:true
+  })
+  orderItem: OrderItem[]
 
   @DeleteDateColumn()
   deletedAt?: Date;

@@ -11,13 +11,13 @@ import { Product } from './product.entity';
 
 @Entity('review')
 export class Review {
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column('text')
   comment: string;
 
-  @Column('smallint', { name: 'stars', default: 5 })
+  @Column({default: 5})
   stars: number;
 
   @Column({ name: 'parentId', nullable: true })
@@ -33,15 +33,15 @@ export class Review {
   })
   createdAt: Date;
 
-  // @ManyToOne(() => Product, (product) => product.review, {
-  //   onDelete: 'CASCADE',
-  // })
-  // product: Product;
+  @ManyToOne(() => Product, (product) => product.review, {
+    onDelete: 'CASCADE',
+  })
+  product: Product;
 
-  // @ManyToOne(() => User, (user) => user.review, {
-  //   onDelete: 'CASCADE',
-  // })
-  // user: User;
+  @ManyToOne(() => User, (user) => user.review, {
+    onDelete: 'CASCADE',
+  })
+  user: User;
 
   @DeleteDateColumn()
   deletedAt?: Date;

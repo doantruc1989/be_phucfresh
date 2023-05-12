@@ -19,8 +19,8 @@ export class ProductVariant {
   })
   createdAt: Date;
 
-  // @ManyToOne(() => Product, (product) => product.productvariant,{
-  //   onDelete: 'CASCADE'
-  // })
-  // product: Product;
+  @ManyToOne(() => Product, (product) => product.productvariant,{
+    onDelete: 'CASCADE'
+  })
+  product: Product;
 }

@@ -9,6 +9,6 @@ export class Cities {
   @Column('varchar')
   cities: string;
 
-  // @OneToMany(() => Districts, (district) => district.city)
-  // district: Districts[];
+  @OneToMany(() => Districts, (district) => district.city)
+  district: Districts[];
 }

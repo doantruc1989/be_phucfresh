@@ -5,7 +5,7 @@ import { Payment } from './Payment.entity';
 
 @Entity()
 export class OrderItem {
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
@@ -23,10 +23,10 @@ export class OrderItem {
   @Column()
   trans: string;
 
-  @Column('float', { name: 'cartTotal', precision: 12, default: () => "'0'" })
+  @Column({default: 0})
   cartTotal: number;
 
-  @Column('float', { name: 'revenue', precision: 12, default: () => "'0'" })
+  @Column({default: 0})
   revenue: number;
 
   @Column({default: 'cod'})
@@ -45,17 +45,17 @@ export class OrderItem {
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
     type: 'timestamp',
-    name: 'modifiedAd',
+    name: 'modifiedAd'
   })
   modifiedAd: Date;
 
-  // @OneToOne(() => Payment)
-  // payment: Payment
+  @OneToOne(() => Payment)
+  payment: Payment
 
-  // @ManyToOne(() => User, (user) => user.orderItem,{
-  //   onDelete: 'CASCADE', nullable: true
-  // })
-  // user: User;
+  @ManyToOne(() => User, (user) => user.orderItem,{
+    onDelete: 'CASCADE', nullable: true
+  })
+  user: User;
 
   @DeleteDateColumn()
   deletedAt?: Date;

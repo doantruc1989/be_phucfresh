@@ -12,8 +12,8 @@ export class Category {
   @Column('varchar')
   path: string;
 
-  // @OneToMany(() => Product, (product) => product.category)
-  // product: Product[];
+  @OneToMany(() => Product, (product) => product.category)
+  product: Product[];
   
   @Column({
     default: () => 'CURRENT_TIMESTAMP',

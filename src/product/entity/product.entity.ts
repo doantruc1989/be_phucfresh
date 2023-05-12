@@ -16,28 +16,28 @@ import { Review } from './review.entity';
 
 @Entity('product')
 export class Product {
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar', { name: 'productName' })
+  @Column('varchar')
   productName: string;
 
   @Column('varchar')
   slug: string;
 
-  @Column('float', { name: 'price', precision: 12, default: 0 })
+  @Column({default: 0})
   price: number;
 
-  @Column('float', { name: 'initialPrice', precision: 12, default: 0 })
+  @Column({default: 0})
   initialPrice: number;
 
-  @Column('smallint', { name: 'quantity', default: 100 })
+  @Column({default: 0})
   quantity: number;
 
-  @Column('smallint', { name: 'sold', default: 99 })
+  @Column({default: 0})
   sold: number;
 
-  @Column('varchar', { name: 'stars', default: 5 })
+  @Column({default: 0})
   stars: number;
 
   @Column('varchar')
@@ -49,7 +49,7 @@ export class Product {
   @Column('varchar')
   brand: string;
 
-  @Column('varchar', { name: 'content', nullable: true, length: 10000 })
+  @Column()
   content: string | null;
 
   @Column({
@@ -59,24 +59,24 @@ export class Product {
   })
   createdAt: Date;
 
-  // @ManyToOne(() => Category, (category) => category.product, {
-  //   onDelete: 'CASCADE',
-  // })
-  // category: Category;
+  @ManyToOne(() => Category, (category) => category.product, {
+    onDelete: 'CASCADE',
+  })
+  category: Category;
 
-  // @ManyToOne(() => Discount, (discount) => discount.product, {
-  //   onDelete: 'CASCADE',
-  // })
-  // discount: Discount;
+  @ManyToOne(() => Discount, (discount) => discount.product, {
+    onDelete: 'CASCADE',
+  })
+  discount: Discount;
 
-  // @OneToMany(() => Review, (review) => review.product)
-  // review: Review[];
+  @OneToMany(() => Review, (review) => review.product)
+  review: Review[];
 
-  // @OneToMany(() => ProductVariant, (productvariant) => productvariant.product)
-  // productvariant: ProductVariant[];
+  @OneToMany(() => ProductVariant, (productvariant) => productvariant.product)
+  productvariant: ProductVariant[];
 
-  // @OneToOne(() => ProductImage)
-  // @JoinColumn()
-  // productimage: ProductImage
+  @OneToOne(() => ProductImage)
+  @JoinColumn()
+  productimage: ProductImage
 
 }

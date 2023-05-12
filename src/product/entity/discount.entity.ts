@@ -3,10 +3,10 @@ import { Product } from './product.entity';
 
 @Entity('discount')
 export class Discount {
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('float', { name: 'disPercent', precision: 12, default: 0 })
+  @Column({default: 0})
   disPercent: number;
 
   @Column('varchar')
@@ -19,7 +19,7 @@ export class Discount {
   })
   createdAt: Date;
 
-  // @OneToMany(() => Product, (product) => product.category)
-  // product: Product[];
+  @OneToMany(() => Product, (product) => product.category)
+  product: Product[];
 
 }

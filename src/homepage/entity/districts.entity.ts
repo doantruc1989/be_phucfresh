@@ -12,9 +12,9 @@ export class Districts {
   @Column('varchar', { length: 15000 })
   wards: string;
 
-  // @ManyToOne(() => Cities, (city) => city.district, {
-  //   onDelete: 'CASCADE',
-  // })
-  // city: Cities;
+  @ManyToOne(() => Cities, (city) => city.district, {
+    onDelete: 'CASCADE',
+  })
+  city: Cities;
 
 }
