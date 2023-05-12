@@ -11,7 +11,7 @@ export class OrderItem {
   @Column()
   address: string;
 
-  @Column('longtext')
+  @Column('text')
   orderItems: string;
 
   @Column()
@@ -37,25 +37,25 @@ export class OrderItem {
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
+    type: 'timestamp',
     name: 'createdAt',
   })
   createdAt: Date;
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
+    type: 'timestamp',
     name: 'modifiedAd',
   })
   modifiedAd: Date;
 
-  @OneToOne(() => Payment)
-  payment: Payment
+  // @OneToOne(() => Payment)
+  // payment: Payment
 
-  @ManyToOne(() => User, (user) => user.orderItem,{
-    onDelete: 'CASCADE', nullable: true
-  })
-  user: User;
+  // @ManyToOne(() => User, (user) => user.orderItem,{
+  //   onDelete: 'CASCADE', nullable: true
+  // })
+  // user: User;
 
   @DeleteDateColumn()
   deletedAt?: Date;

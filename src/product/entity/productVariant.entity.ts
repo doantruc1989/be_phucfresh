@@ -14,13 +14,13 @@ export class ProductVariant {
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
+    type: 'timestamp',
     name: 'createdAt',
   })
   createdAt: Date;
 
-  @ManyToOne(() => Product, (product) => product.productvariant,{
-    onDelete: 'CASCADE'
-  })
-  product: Product;
+  // @ManyToOne(() => Product, (product) => product.productvariant,{
+  //   onDelete: 'CASCADE'
+  // })
+  // product: Product;
 }

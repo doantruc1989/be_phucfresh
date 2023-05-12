@@ -43,11 +43,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Roles(Role.Admin)
-  @UseGuards(AccessTokenGuard, RolesGuard)
+  // @Roles(Role.Admin)
+  @UseGuards(AccessTokenGuard)
   @Get('')
   async getAllUser(@Body() paginationDto: PaginationDto) {
-    return this.usersService.getUsers(paginationDto);
+    return this.usersService.getUsers();
   }
 
   @Roles(Role.Admin)

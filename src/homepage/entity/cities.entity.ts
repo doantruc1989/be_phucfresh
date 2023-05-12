@@ -3,12 +3,12 @@ import { Districts } from './districts.entity';
 
 @Entity('cities')
 export class Cities {
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column('varchar')
   cities: string;
 
-  @OneToMany(() => Districts, (district) => district.city)
-  district: Districts[];
+  // @OneToMany(() => Districts, (district) => district.city)
+  // district: Districts[];
 }

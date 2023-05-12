@@ -3,7 +3,7 @@ import { UpdateDateColumn, CreateDateColumn } from 'typeorm';
 export class SharedProp {
   @CreateDateColumn({
     default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
+    type: 'timestamp',
     name: 'createdAt',
   })
   createdAt: Date;

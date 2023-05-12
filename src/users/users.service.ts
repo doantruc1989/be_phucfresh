@@ -20,11 +20,11 @@ export class UsersService {
     private queueService: Queue,
   ) {}
 
-  async getUsers(paginationDto: PaginationDto) {
+  async getUsers() {
     const user = await this.usersRepository
       .createQueryBuilder('user')
-      .skip(paginationDto.take * (paginationDto.page - 1))
-      .take(paginationDto.take)
+      // .skip(paginationDto.take * (paginationDto.page - 1))
+      // .take(paginationDto.take)
       .getMany();
     return user;
   }

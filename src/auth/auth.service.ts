@@ -82,7 +82,13 @@ export class AuthService {
     if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
     const tokens = await this.getTokens(user.id, user.email, user.role);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
-    return { tokens, id: user.id, username: user.username, image: user.image };
+    return { tokens,
+      role: user.role,
+      id: user.id,
+      username: user.username,
+      image: user.image,
+      address: user.address,
+      phone: user.phone, };
   }
 
   async hashData(data: string) {
@@ -106,7 +112,7 @@ export class AuthService {
         },
         {
           secret: 'mycat',
-          expiresIn: '7d',
+          expiresIn: '15s',
         },
       ),
       this.jwtService.sign(

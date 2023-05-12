@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,10 +23,11 @@ import { RefreshTokenGuard } from './guards/refreshToken.guard';
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    ) {}
+  ) {}
 
   @Post('signup')
   signup(@Body() createUserDto: CreateUserDto) {
@@ -50,19 +60,18 @@ export class AuthController {
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req)
+    return this.authService.googleLogin(req);
   }
 
-  @Get("facebook")
-  @UseGuards(AuthGuard("facebook"))
+  @Get('facebook')
+  @UseGuards(AuthGuard('facebook'))
   async facebookLogin(): Promise<any> {
     return HttpStatus.OK;
   }
 
-  @Get("/facebook/redirect")
-  @UseGuards(AuthGuard("facebook"))
+  @Get('/facebook/redirect')
+  @UseGuards(AuthGuard('facebook'))
   async facebookLoginRedirect(@Req() req) {
-    return await this.authService.facebookLogin(req)
+    return await this.authService.facebookLogin(req);
   }
-  
 }

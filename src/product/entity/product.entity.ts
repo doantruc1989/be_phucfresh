@@ -54,29 +54,29 @@ export class Product {
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
+    type: 'timestamp',
     name: 'createdAt',
   })
   createdAt: Date;
 
-  @ManyToOne(() => Category, (category) => category.product, {
-    onDelete: 'CASCADE',
-  })
-  category: Category;
+  // @ManyToOne(() => Category, (category) => category.product, {
+  //   onDelete: 'CASCADE',
+  // })
+  // category: Category;
 
-  @ManyToOne(() => Discount, (discount) => discount.product, {
-    onDelete: 'CASCADE',
-  })
-  discount: Discount;
+  // @ManyToOne(() => Discount, (discount) => discount.product, {
+  //   onDelete: 'CASCADE',
+  // })
+  // discount: Discount;
 
-  @OneToMany(() => Review, (review) => review.product)
-  review: Review[];
+  // @OneToMany(() => Review, (review) => review.product)
+  // review: Review[];
 
-  @OneToMany(() => ProductVariant, (productvariant) => productvariant.product)
-  productvariant: ProductVariant[];
+  // @OneToMany(() => ProductVariant, (productvariant) => productvariant.product)
+  // productvariant: ProductVariant[];
 
-  @OneToOne(() => ProductImage)
-  @JoinColumn()
-  productimage: ProductImage
+  // @OneToOne(() => ProductImage)
+  // @JoinColumn()
+  // productimage: ProductImage
 
 }

@@ -20,42 +20,42 @@ export class Payment {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
   id: number;
 
-  @Column('float', { name: 'cartTotal', precision: 12, default: () => "'0'" })
-  cartTotal: number;
+  // @Column('float', { name: 'cartTotal', precision: 12, default: () => "'0'" })
+  // cartTotal: number;
 
-  @Column({
-    type: 'enum',
-    enum: Status,
-    default: Status.UnConfirm,
-  })
-  status: Status[];
+  // @Column({
+  //   type: 'enum',
+  //   enum: Status,
+  //   default: Status.UnConfirm,
+  // })
+  // status: Status[];
 
-  @Column({ default: () => 0 })
-  review: number;
+  // @Column({ default: () => 0 })
+  // review: number;
 
-  @Column({
-    type: 'enum',
-    enum: PaymentType,
-    default: PaymentType.COD,
-  })
-  paymentType: PaymentType[];
+  // @Column({
+  //   type: 'enum',
+  //   enum: PaymentType,
+  //   default: PaymentType.COD,
+  // })
+  // paymentType: PaymentType[];
 
-  @Column({
-    default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
-    name: 'createdAt',
-  })
-  createdAt: Date;
+  // @Column({
+  //   default: () => 'CURRENT_TIMESTAMP',
+  //   type: 'timestamp',
+  //   name: 'createdAt',
+  // })
+  // createdAt: Date;
 
-  @Column({
-    default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
-    name: 'modifiedAd',
-  })
-  modifiedAd: Date;
+  // @Column({
+  //   default: () => 'CURRENT_TIMESTAMP',
+  //   type: 'timestamp',
+  //   name: 'modifiedAd',
+  // })
+  // modifiedAd: Date;
 
-  @OneToOne(() => OrderItem)
-  @JoinColumn()
-  orderItem: OrderItem
+  // @OneToOne(() => OrderItem)
+  // @JoinColumn()
+  // orderItem: OrderItem
 
 }

@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `text` varchar(10000) NOT NULL,
-  `createdAt` datetime(6) NOT NULL DEFAULT current_timestamp(6),
+  `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
   `image` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category` varchar(75) DEFAULT NULL,
   `path` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `chat` (
   `room` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `text` varchar(255) NOT NULL,
-  `createdAt` datetime(6) NOT NULL DEFAULT current_timestamp(6),
+  `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
   PRIMARY KEY (`id`),
   UNIQUE KEY `IDX_7f3e04a25760adbd8ac4a60cab` (`text`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `discount` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `disPercent` float NOT NULL DEFAULT 0,
   `name` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -885,12 +885,12 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   `trans` varchar(255) NOT NULL,
   `cartTotal` float NOT NULL DEFAULT 0,
   `revenue` float NOT NULL DEFAULT 0,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `modifiedAd` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `modifiedAd` timestamp NOT NULL DEFAULT current_timestamp(),
   `userId` int(11) DEFAULT NULL,
-  `orderItems` longtext NOT NULL,
+  `orderItems` text NOT NULL,
   `guest` varchar(255) DEFAULT NULL,
-  `deletedAt` datetime(6) DEFAULT NULL,
+  `deletedAt` timestamp(6) DEFAULT NULL,
   `isPaid` varchar(255) NOT NULL DEFAULT 'cod',
   `status` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
@@ -909,8 +909,8 @@ INSERT INTO `order_item` (`id`, `address`, `phone`, `trans`, `cartTotal`, `reven
 CREATE TABLE IF NOT EXISTS `payment` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `cartTotal` float NOT NULL DEFAULT 0,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `modifiedAd` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `modifiedAd` timestamp NOT NULL DEFAULT current_timestamp(),
   `orderItemId` bigint(20) DEFAULT NULL,
   `review` int(11) NOT NULL DEFAULT 0,
   `status` enum('unConfirm','confirmed','transPorting','finished') NOT NULL DEFAULT 'unConfirm',
@@ -933,7 +933,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `stars` varchar(255) NOT NULL DEFAULT '5',
   `image` varchar(255) NOT NULL,
   `brand` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `categoryId` bigint(20) DEFAULT NULL,
   `discountId` bigint(20) DEFAULT NULL,
   `active` tinyint(4) NOT NULL DEFAULT 1,
@@ -1165,7 +1165,7 @@ CREATE TABLE IF NOT EXISTS `productvariant` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `typePrice` int(11) NOT NULL DEFAULT 0,
   `type` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `productId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ae3d40a34e1a6e76f1082169eb0` (`productId`),
@@ -1180,8 +1180,8 @@ CREATE TABLE IF NOT EXISTS `review` (
   `comment` text NOT NULL,
   `stars` smallint(6) NOT NULL DEFAULT 5,
   `type` varchar(255) NOT NULL DEFAULT 'original',
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `deletedAt` datetime(6) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deletedAt` timestamp(6) DEFAULT NULL,
   `productId` bigint(20) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
   `parentId` int(11) DEFAULT NULL,
@@ -1199,7 +1199,7 @@ CREATE TABLE IF NOT EXISTS `subcategory` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(75) DEFAULT NULL,
   `path` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `categoryId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_3fc84b9483bdd736f728dbf95b2` (`categoryId`),
@@ -1241,8 +1241,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `image` varchar(255) NOT NULL DEFAULT 'https://nhungdieuthuvi.com/wp-content/uploads/2021/08/avartar-vit-vang-psyduck.jpg',
   `role` enum('user','admin') NOT NULL DEFAULT 'user',
   `refreshToken` varchar(255) DEFAULT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `deletedAt` datetime(6) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deletedAt` timestamp(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `IDX_e12875dfb3b1d92d7d7c5377e2` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -28,20 +28,20 @@ export class Review {
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
-    type: 'datetime',
+    type: 'timestamp',
     name: 'createdAt',
   })
   createdAt: Date;
 
-  @ManyToOne(() => Product, (product) => product.review, {
-    onDelete: 'CASCADE',
-  })
-  product: Product;
+  // @ManyToOne(() => Product, (product) => product.review, {
+  //   onDelete: 'CASCADE',
+  // })
+  // product: Product;
 
-  @ManyToOne(() => User, (user) => user.review, {
-    onDelete: 'CASCADE',
-  })
-  user: User;
+  // @ManyToOne(() => User, (user) => user.review, {
+  //   onDelete: 'CASCADE',
+  // })
+  // user: User;
 
   @DeleteDateColumn()
   deletedAt?: Date;
